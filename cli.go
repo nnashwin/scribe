@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"github.com/fatih/color"
+	"github.com/mitchellh/go-homedir"
 	"github.com/urfave/cli"
 )
 
@@ -22,12 +24,24 @@ func StartCli(args []string) (resp []string, err error) {
 		return nil
 	}
 
-	app.Commands = []cli.Command{}
+	app.Commands = []cli.Command{
+		{
+			Name:    "addLink",
+			Aliases: []string{"al"},
+			Usage:   "adds a link to your link repository",
+			Action: func(c *cli.Context) error {
+				homeDir, err := homedir.Dir()
+				if err != nil {
+					return fmt.Errorf("The homedir could not be found with the following message %s", err)
+				}
 
-	err = app.Run(args)
-	if err != nil {
-		return resp, err
+				resp = append(resp, homeDir)
+
+				return nil
+			},
+		},
 	}
 
+	err = app.Run(args)
 	return
 }
