@@ -1,11 +1,22 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/mitchellh/go-homedir"
+	pf "github.com/ru-lai/pathfinder"
 	"github.com/urfave/cli"
+	"io/ioutil"
+	"os"
+	"path"
 )
+
+var Links = struct {
+	Entries map[string]Link `json:"entries,omitempty"`
+}{}
+
+var dirName = ".scribe/links.json"
 
 func StartCli(args []string) (resp []string, err error) {
 	app := cli.NewApp()
@@ -34,6 +45,45 @@ func StartCli(args []string) (resp []string, err error) {
 				if err != nil {
 					return fmt.Errorf("The homedir could not be found with the following message %s", err)
 				}
+
+				linkPath := path.Join(homeDir, dirName)
+
+				// Create file if it doesn't exist
+				if pf.DoesExist(linkPath) == false {
+					err = pf.CreateFile(linkPath)
+					if err != nil {
+						return err
+					}
+				}
+
+				links, err := ioutil.ReadFile(linkPath)
+				if err != nil {
+					return fmt.Errorf("%s", err)
+				}
+
+				if len(links) > 0 {
+					err = json.Unmarshal(links, &Links)
+					if err != nil {
+						return fmt.Errorf("%s", err)
+					}
+				}
+
+				if Links.Entries == nil {
+					Links.Entries = make(map[string]Link)
+				}
+
+				// map the arg desc to the url
+				Links.Entries[c.Args().First()] = Link{c.Args().Get(1)}
+
+				b, err := json.Marshal(Links)
+				if err != nil {
+					return fmt.Errorf("%s", err)
+				}
+
+				ioutil.WriteFile(linkPath, b, os.ModePerm)
+
+				fmt.Printf("Enscribed a link '%s' to your records.\n", c.Args().Get(1))
+				fmt.Println(Links.Entries)
 
 				resp = append(resp, homeDir)
 
