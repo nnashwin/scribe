@@ -73,7 +73,11 @@ func StartCli(args []string) (resp []string, err error) {
 				}
 
 				// map the arg desc to the url
-				Links.Entries[c.Args().First()] = Link{c.Args().Get(1)}
+				if _, ok := Links.Entries[c.Args().First()]; ok == false {
+					Links.Entries[c.Args().First()] = Link{c.Args().Get(1)}
+				} else {
+					return fmt.Errorf("The keyword '%s' is already recorded in your list of links", c.Args().First())
+				}
 
 				b, err := json.Marshal(Links)
 				if err != nil {
