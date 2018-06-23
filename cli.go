@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/atotto/clipboard"
-	"github.com/fatih/color"
 	pf "github.com/ru-lai/pathfinder"
 	"github.com/urfave/cli"
 	"io/ioutil"
@@ -16,8 +15,6 @@ var Links = struct {
 }{}
 
 func StartCli(args []string, linkPath string) (resp []string, err error) {
-	respCol := color.New(color.FgMagenta).SprintFunc()
-
 	app := cli.NewApp()
 	app.Name = "scribe"
 	app.Version = "0.0.1"
@@ -30,7 +27,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 	}
 
 	app.Action = func(c *cli.Context) error {
-		resp = append(resp, respCol(fmt.Sprintf("Add a link with scribe!  Run scribe addLink <linkName> <link> to begin!")))
+		resp = append(resp, "Add a link with scribe!  Run scribe addLink <linkName> <link> to begin!")
 		return nil
 	}
 
@@ -50,13 +47,13 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 
 				links, err := ioutil.ReadFile(linkPath)
 				if err != nil {
-					return fmt.Errorf("%s", err)
+					return err
 				}
 
 				if len(links) > 0 {
 					err = json.Unmarshal(links, &Links)
 					if err != nil {
-						return fmt.Errorf("%s", err)
+						return err
 					}
 				}
 
@@ -69,12 +66,12 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 
 				b, err := json.Marshal(Links)
 				if err != nil {
-					return fmt.Errorf("%s", err)
+					return err
 				}
 
 				ioutil.WriteFile(linkPath, b, os.ModePerm)
 
-				fmt.Printf(respCol(fmt.Sprintf("Enscribed a link '%s' to your records.\n", c.Args().Get(1))))
+				resp = append(resp, fmt.Sprintf("Enscribed a link '%s' to your records.\n", c.Args().Get(1)))
 
 				return nil
 			},
@@ -93,7 +90,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 				}
 				clipboard.WriteAll("There is no cow level")
 				text, _ := clipboard.ReadAll()
-				fmt.Println(text)
+				resp = append(resp, text)
 				return nil
 			},
 		},
