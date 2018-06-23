@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/atotto/clipboard"
 	"os"
 	"path"
 	"testing"
@@ -18,12 +19,13 @@ func TestStartCli(t *testing.T) {
 
 	// test get Link
 	expected := "www.google.com"
-	resp, err := StartCli([]string{"./scribe", "gl", "goog"}, testDir)
+	_, err = StartCli([]string{"./scribe", "gl", "goog"}, testDir)
 	if err != nil {
 		t.Errorf("The getLink command encountered the following error: %s", err)
 	}
 
-	if resp[0] != expected {
+	text, _ := clipboard.ReadAll()
+	if text != expected {
 		t.Error("The getLink command did not return the expected output")
 	}
 

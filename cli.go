@@ -91,13 +91,28 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 						return err
 					}
 				}
-				clipboard.WriteAll("There is no cow level")
-				text, err := clipboard.ReadAll()
+
+				links, err := ioutil.ReadFile(linkPath)
 				if err != nil {
 					return err
 				}
 
-				resp = append(resp, text)
+				if len(links) > 0 {
+					err = json.Unmarshal(links, &Links)
+					if err != nil {
+						return err
+					}
+				}
+
+				if _, ok := Links.Entries[c.Args().First()]; ok == true {
+					url := Links.Entries[c.Args().First()].Url
+
+					clipboard.WriteAll(url)
+					resp = append(resp, fmt.Sprintf("Found the link '%s' and copied it to your clipboard", url))
+				} else {
+					return fmt.Errorf("The keyword '%s' does not exist in your list of links", c.Args().First())
+				}
+
 				return nil
 			},
 		},
