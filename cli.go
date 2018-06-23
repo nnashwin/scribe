@@ -86,9 +86,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 			Usage:   "retrieves a previously defined link by a mnemonic and pastes it to your clipboard",
 			Action: func(c *cli.Context) error {
 				if pf.DoesExist(linkPath) == false {
-					if err != nil {
-						return err
-					}
+					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
 				}
 
 				links, err := ioutil.ReadFile(linkPath)
