@@ -32,5 +32,4 @@ func main() {
 	for _, str := range resp {
 		fmt.Printf("\n%s", respCol(fmt.Sprintf(str)))
 	}
-
 }
