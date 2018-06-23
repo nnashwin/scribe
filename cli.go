@@ -85,7 +85,6 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 			Aliases: []string{"gl"},
 			Usage:   "retrieves a previously defined link by a mnemonic and pastes it to your clipboard",
 			Action: func(c *cli.Context) error {
-				// Create file if it doesn't exist
 				if pf.DoesExist(linkPath) == false {
 					if err != nil {
 						return err
