@@ -16,6 +16,8 @@ var Links = struct {
 }{}
 
 func StartCli(args []string, linkPath string) (resp []string, err error) {
+	respCol := color.New(color.FgMagenta).SprintFunc()
+
 	app := cli.NewApp()
 	app.Name = "scribe"
 	app.Version = "0.0.1"
@@ -28,7 +30,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 	}
 
 	app.Action = func(c *cli.Context) error {
-		color.Magenta("Add a link with scribe add <linkName> <link>")
+		resp = append(resp, respCol(fmt.Sprintf("Add a link with scribe!  Run scribe addLink <linkName> <link> to begin!")))
 		return nil
 	}
 
@@ -84,6 +86,13 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 			Aliases: []string{"gl"},
 			Usage:   "retrieves a previously defined link by a mnemonic and pastes it to your clipboard",
 			Action: func(c *cli.Context) error {
+				// Create file if it doesn't exist
+				if pf.DoesExist(linkPath) == false {
+
+					if err != nil {
+						return err
+					}
+				}
 				clipboard.WriteAll("There is no cow level")
 				text, _ := clipboard.ReadAll()
 				fmt.Println(text)
