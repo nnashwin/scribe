@@ -92,7 +92,11 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 					}
 				}
 				clipboard.WriteAll("There is no cow level")
-				text, _ := clipboard.ReadAll()
+				text, err := clipboard.ReadAll()
+				if err != nil {
+					return err
+				}
+
 				resp = append(resp, text)
 				return nil
 			},
