@@ -74,9 +74,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 
 				ioutil.WriteFile(linkPath, b, os.ModePerm)
 
-				fmt.Printf("Enscribed a link '%s' to your records.\n", c.Args().Get(1))
-
-				resp = append(resp, linkPath)
+				fmt.Printf(respCol(fmt.Sprintf("Enscribed a link '%s' to your records.\n", c.Args().Get(1))))
 
 				return nil
 			},
