@@ -4,6 +4,7 @@ import (
 	"github.com/atotto/clipboard"
 	"os"
 	"path"
+	"strings"
 	"testing"
 )
 
@@ -11,15 +12,15 @@ var testDir = path.Join("./fixtures", "Links.json")
 
 func TestStartCli(t *testing.T) {
 
-	// test add Link
-	_, err := StartCli([]string{"./scribe", "al", "goog", "www.google.com"}, testDir)
+	// test addLink
+	_, err := StartCli([]string{"./scribe", "al", "search", "www.google.com"}, testDir)
 	if err != nil {
 		t.Errorf("The addLink command encountered the following error: %s", err)
 	}
 
-	// test get Link
+	// test getLink
 	expected := "www.google.com"
-	_, err = StartCli([]string{"./scribe", "gl", "goog"}, testDir)
+	_, err = StartCli([]string{"./scribe", "gl", "search"}, testDir)
 	if err != nil {
 		t.Errorf("The getLink command encountered the following error: %s", err)
 	}
@@ -27,6 +28,20 @@ func TestStartCli(t *testing.T) {
 	text, _ := clipboard.ReadAll()
 	if text != expected {
 		t.Error("The getLink command did not return the expected output")
+	}
+
+	// test listLinks
+	expectedLink := "www.google.com"
+	expectedClue := "search"
+
+	resp, err := StartCli([]string{"./scribe", "ll"}, testDir)
+	if err != nil {
+		t.Errorf("The listLinks method returned an error: %s", err)
+	}
+
+	// check to see if the second string in the listLinks slice of strings has the Link and Clue
+	if strings.Contains(resp[1], expectedLink) == false || strings.Contains(resp[1], expectedClue) == false {
+		t.Errorf("The listLinks method failed to return the list of links and their clues")
 	}
 
 	err = os.RemoveAll(testDir)

@@ -113,6 +113,35 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 				return nil
 			},
 		},
+		{
+			Name:    "listLinks",
+			Aliases: []string{"ll"},
+			Usage:   "displays all of your stored hints and links",
+			Action: func(c *cli.Context) error {
+				if pf.DoesExist(linkPath) == false {
+					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
+				}
+
+				links, err := ioutil.ReadFile(linkPath)
+				if err != nil {
+					return err
+				}
+
+				if len(links) > 0 {
+					err = json.Unmarshal(links, &Links)
+					if err != nil {
+						return err
+					}
+				}
+
+				resp = append(resp, "Printing out your links:")
+				for k, link := range Links.Entries {
+					resp = append(resp, fmt.Sprintf("- Link: %s, Clue: %s", link.Url, k))
+				}
+
+				return nil
+			},
+		},
 	}
 
 	err = app.Run(args)
