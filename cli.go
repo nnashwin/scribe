@@ -27,7 +27,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 	}
 
 	app.Action = func(c *cli.Context) error {
-		resp = append(resp, "Add a link with scribe!  Run scribe addLink <linkName> <link> to begin!")
+		resp = append(resp, "Add a link with scribe!  Run scribe addLink <linkClue> <link> to begin!")
 		return nil
 	}
 
@@ -35,7 +35,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 		{
 			Name:    "addLink",
 			Aliases: []string{"al"},
-			Usage:   "adds a link to your link repository",
+			Usage: "adds a link to your link repository by clue; \nExample: \n  scribe addLink search www.google.com\n		//=> Adds www.google.com to your directory of links under the clue 'search'",
 			Action: func(c *cli.Context) error {
 				// Create file if it doesn't exist
 				if pf.DoesExist(linkPath) == false {
@@ -122,7 +122,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 		{
 			Name:    "getLink",
 			Aliases: []string{"gl"},
-			Usage:   "retrieves a previously defined link by a mnemonic and pastes it to your clipboard",
+			Usage: "retrieves a previously defined link by clue and pastes it to your clipboard; \nExample: \n  scribe addLink search www.google.com\n		//=> Pastes www.google.com to your clipboard",
 			Action: func(c *cli.Context) error {
 				if pf.DoesExist(linkPath) == false {
 					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
