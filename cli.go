@@ -81,6 +81,45 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 			},
 		},
 		{
+			Name:    "deleteLink",
+			Aliases: []string{"dl"},
+			Usage:   "deletes a previously defined link by a clue",
+			Action: func(c *cli.Context) error {
+				if pf.DoesExist(linkPath) == false {
+					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
+				}
+
+				links, err := ioutil.ReadFile(linkPath)
+				if err != nil {
+					return err
+				}
+
+				if len(links) > 0 {
+					err = json.Unmarshal(links, &Links)
+					if err != nil {
+						return err
+					}
+				}
+
+				if _, ok := Links.Entries[c.Args().First()]; ok == true {
+					url := Links.Entries[c.Args().First()].Url
+					delete(Links.Entries, c.Args().First())
+
+					b, err := json.Marshal(Links)
+					if err != nil {
+						return err
+					}
+
+					ioutil.WriteFile(linkPath, b, os.ModePerm)
+					resp = append(resp, fmt.Sprintf("Deleted the link to '%s' from your link directory", url))
+
+					return nil
+				} else {
+					return fmt.Errorf("The keyword '%s' does not exist in your directory of links", c.Args().First())
+				}
+			},
+		},
+		{
 			Name:    "getLink",
 			Aliases: []string{"gl"},
 			Usage:   "retrieves a previously defined link by a mnemonic and pastes it to your clipboard",

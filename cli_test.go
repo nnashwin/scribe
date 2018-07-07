@@ -47,7 +47,7 @@ func TestStartCli(t *testing.T) {
 
 	// Run getLink to see if www.google.com still exists; if it does this test should fail
 	resp, err = StartCli([]string{"./scribe", "gl", "search"}, testDir)
-	if strings.Contains(resp[0], "www.google.com") {
+	if len(resp) > 0 {
 		t.Errorf("The deleteLinks method failed to delete the link")
 	}
 
