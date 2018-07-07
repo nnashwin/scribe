@@ -11,7 +11,6 @@ import (
 var testDir = path.Join("./fixtures", "Links.json")
 
 func TestStartCli(t *testing.T) {
-
 	// test addLink
 	_, err := StartCli([]string{"./scribe", "al", "search", "www.google.com"}, testDir)
 	if err != nil {
@@ -42,6 +41,14 @@ func TestStartCli(t *testing.T) {
 	// check to see if the second string in the listLinks slice of strings has the Link and Clue
 	if strings.Contains(resp[1], expectedLink) == false || strings.Contains(resp[1], expectedClue) == false {
 		t.Errorf("The listLinks method failed to return the list of links and their clues")
+	}
+
+	StartCli([]string{"./scribe", "dl", "search"}, testDir)
+
+	// Run getLink to see if www.google.com still exists; if it does this test should fail
+	resp, err = StartCli([]string{"./scribe", "gl", "search"}, testDir)
+	if strings.Contains(resp[0], "www.google.com") {
+		t.Errorf("The deleteLinks method failed to delete the link")
 	}
 
 	err = os.RemoveAll(testDir)
