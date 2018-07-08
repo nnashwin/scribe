@@ -83,7 +83,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 		{
 			Name:    "deleteLink",
 			Aliases: []string{"dl"},
-			Usage:   "deletes a previously defined link by a clue",
+			Usage: "deletes a previously defined link by a clue; \nExample: \n  scribe deleteLink goog\n		//=> Deleted the link to 'google.com' from your link directory",
 			Action: func(c *cli.Context) error {
 				if pf.DoesExist(linkPath) == false {
 					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
