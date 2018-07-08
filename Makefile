@@ -1,5 +1,5 @@
 BINNAME=scribe
-BINARYDIR=$(HOME)/bin/
+BINARYDIR=$(GOPATH)/bin/
 
 all: test build
 
