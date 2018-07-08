@@ -3,4 +3,7 @@ language: go
 go:
     - "1.x"
 
-script: go get && go test
+before_script:
+    - go get
+
+script: go test
