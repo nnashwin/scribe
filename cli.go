@@ -155,7 +155,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 		{
 			Name:    "listLinks",
 			Aliases: []string{"ll"},
-			Usage:   "displays all of your stored hints and links",
+			Usage: "displays all of your stored clues and links; \nExample: \n  scribe listLinks\n		//=> Printing out your links:\n			- Link: tyler.com, Clue: cookies\n			- Link: google.com, Clue: goog",
 			Action: func(c *cli.Context) error {
 				if pf.DoesExist(linkPath) == false {
 					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
