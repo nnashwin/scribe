@@ -5,5 +5,8 @@ go:
 
 before_script:
     - go get
+    - ls
+    - mkdir fixtures
+    - ls
 
 script: go test
