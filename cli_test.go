@@ -26,7 +26,7 @@ func TestStartCli(t *testing.T) {
 
 	text, _ := clipboard.ReadAll()
 	if text != expected {
-		t.Error("The getLink command did not return the expected output")
+		t.Errorf("The getLink command did not return the expected output\n Expected: %s\n Actual: %s", expected, text)
 	}
 
 	// test listLinks
