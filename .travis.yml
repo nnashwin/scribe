@@ -5,6 +5,6 @@ go:
 
 before_script:
     - go get
-    - sudo apt-get install xclip
+    - sudo apt-get install xclip xsel
 
 script: go test
