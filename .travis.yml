@@ -5,6 +5,9 @@ go:
 
 before_script:
     - go get
-    - sudo apt-get install xclip xsel
 
-script: which xclip && go test
+script: 
+    - sudo apt-get install xsel
+    - go test -v .
+    - sudo apt-get install xclip
+    - go test -v .

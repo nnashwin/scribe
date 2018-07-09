@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/atotto/clipboard"
 	"os"
 	"path"
@@ -27,7 +26,6 @@ func TestStartCli(t *testing.T) {
 
 	clipboard.WriteAll("Cookies")
 	text, _ := clipboard.ReadAll()
-	fmt.Println(text)
 	if text != expected {
 		t.Errorf("The getLink command did not return the expected output\n Expected: %s\n Actual: %s", expected, text)
 	}
