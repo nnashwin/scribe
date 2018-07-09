@@ -24,8 +24,11 @@ func TestStartCli(t *testing.T) {
 		t.Errorf("The getLink command encountered the following error: %s", err)
 	}
 
-	clipboard.WriteAll("Cookies")
-	text, _ := clipboard.ReadAll()
+	text, err := clipboard.ReadAll()
+	if err != nil {
+		t.Errorf("There was an error reading the string from the clipboard: %s", err)
+	}
+
 	if text != expected {
 		t.Errorf("The getLink command did not return the expected output\n Expected: %s\n Actual: %s", expected, text)
 	}
