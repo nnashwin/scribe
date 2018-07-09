@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/atotto/clipboard"
 	"os"
 	"path"
@@ -12,17 +13,21 @@ var testDir = path.Join("./fixtures", "Links.json")
 
 func TestStartCli(t *testing.T) {
 	// test addLink
-	_, err := StartCli([]string{"./scribe", "al", "search", "www.google.com"}, testDir)
+	resp, err := StartCli([]string{"./scribe", "al", "search", "www.google.com"}, testDir)
 	if err != nil {
 		t.Errorf("The addLink command encountered the following error: %s", err)
 	}
 
+	fmt.Println(resp)
+
 	// test getLink
 	expected := "www.google.com"
-	_, err = StartCli([]string{"./scribe", "gl", "search"}, testDir)
+	resp, err = StartCli([]string{"./scribe", "gl", "search"}, testDir)
 	if err != nil {
 		t.Errorf("The getLink command encountered the following error: %s", err)
 	}
+
+	fmt.Println(resp)
 
 	text, err := clipboard.ReadAll()
 	if err != nil {
@@ -37,7 +42,7 @@ func TestStartCli(t *testing.T) {
 	expectedLink := "www.google.com"
 	expectedClue := "search"
 
-	resp, err := StartCli([]string{"./scribe", "ll"}, testDir)
+	resp, err = StartCli([]string{"./scribe", "ll"}, testDir)
 	if err != nil {
 		t.Errorf("The listLinks method returned an error: %s", err)
 	}
