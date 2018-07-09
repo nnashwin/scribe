@@ -7,4 +7,4 @@ before_script:
     - go get
     - sudo apt-get install xclip xsel
 
-script: go test
+script: which xclip && go test
