@@ -3,8 +3,10 @@ language: go
 go:
     - go1.10
 
-before_script:
+before_install:
     - go get
+    - export DISPLAY=:99.0
+    - sh -e /etc/init.d/xvfb start
 
 script: 
     - sudo apt-get install xsel

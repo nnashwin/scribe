@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/atotto/clipboard"
 	"os"
 	"path"
@@ -18,16 +17,12 @@ func TestStartCli(t *testing.T) {
 		t.Errorf("The addLink command encountered the following error: %s", err)
 	}
 
-	fmt.Println(resp)
-
 	// test getLink
 	expected := "www.google.com"
 	resp, err = StartCli([]string{"./scribe", "gl", "search"}, testDir)
 	if err != nil {
 		t.Errorf("The getLink command encountered the following error: %s", err)
 	}
-
-	fmt.Println(resp)
 
 	text, err := clipboard.ReadAll()
 	if err != nil {
