@@ -35,7 +35,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 		{
 			Name:    "addLink",
 			Aliases: []string{"al"},
-			Usage: "adds a link to your link repository by clue; \nExample: \n  scribe addLink search www.google.com\n		//=> Adds www.google.com to your directory of links under the clue 'search'",
+			Usage:   "\n      - adds a link to your link repository by clue; \n        Example: scribe addLink search www.google.com\n          //=> Adds www.google.com to your directory of links under the clue 'search'",
 			Action: func(c *cli.Context) error {
 				// Create file if it doesn't exist
 				if pf.DoesExist(linkPath) == false {
@@ -83,7 +83,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 		{
 			Name:    "deleteLink",
 			Aliases: []string{"dl"},
-			Usage: "deletes a previously defined link by a clue; \nExample: \n  scribe deleteLink goog\n		//=> Deleted the link to 'google.com' from your link directory",
+			Usage:   "\n      - deletes a previously defined link by clue; \n        Example: scribe deleteLink search \n          //=> Deleted the link to 'google.com' from your link directory",
 			Action: func(c *cli.Context) error {
 				if pf.DoesExist(linkPath) == false {
 					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
@@ -122,7 +122,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 		{
 			Name:    "getLink",
 			Aliases: []string{"gl"},
-			Usage: "retrieves a previously defined link by clue and pastes it to your clipboard; \nExample: \n  scribe addLink search www.google.com\n		//=> Pastes www.google.com to your clipboard",
+			Usage:   "\n      - retrieves a previously defined link by clue and pastes it to your clipboard; \n        Example: scribe getLink search\n          //=> Pastes www.google.com to your clipboard",
 			Action: func(c *cli.Context) error {
 				if pf.DoesExist(linkPath) == false {
 					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
@@ -155,7 +155,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 		{
 			Name:    "listLinks",
 			Aliases: []string{"ll"},
-			Usage: "displays all of your stored clues and links; \nExample: \n  scribe listLinks\n		//=> Printing out your links:\n			- Link: tyler.com, Clue: cookies\n			- Link: google.com, Clue: goog",
+			Usage: "\n      - displays all of your stored clues and links; \n        Example: scribe listLinks\n					//=> Printing out your links:\n						- Link: tyler.com, Clue: cookies\n						- Link: google.com, Clue: goog\n",
 			Action: func(c *cli.Context) error {
 				if pf.DoesExist(linkPath) == false {
 					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
