@@ -5,4 +5,5 @@
 - DONE Implement a method to delete a mnemonic and link
 - DONE Add better usage man docs for the list links command
 - DONE Add better usage man docs for the delete links command
-- TODO Write readme to describe api
+- DONE Write readme to describe api
+- TODO Add changeLink support for a specific mnemonic
