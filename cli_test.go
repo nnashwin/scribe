@@ -11,14 +11,15 @@ import (
 var testDir = path.Join("./fixtures", "Links.json")
 
 func TestStartCli(t *testing.T) {
+	expectedClue := "search"
+	expectedLink := "www.google.com"
 	// test addLink
-	resp, err := StartCli([]string{"./scribe", "al", "search", "www.google.com"}, testDir)
+	resp, err := StartCli([]string{"./scribe", "al", expectedClue, expectedLink}, testDir)
 	if err != nil {
 		t.Errorf("The addLink command encountered the following error: %s", err)
 	}
 
 	// test getLink
-	expected := "www.google.com"
 	resp, err = StartCli([]string{"./scribe", "gl", "search"}, testDir)
 	if err != nil {
 		t.Errorf("The getLink command encountered the following error: %s", err)
@@ -29,14 +30,11 @@ func TestStartCli(t *testing.T) {
 		t.Errorf("There was an error reading the string from the clipboard: %s", err)
 	}
 
-	if text != expected {
-		t.Errorf("The getLink command did not return the expected output\n Expected: %s\n Actual: %s", expected, text)
+	if text != expectedLink {
+		t.Errorf("The getLink command did not return the expected output\n Expected: %s\n Actual: %s", expectedLink, text)
 	}
 
 	// test listLinks
-	expectedLink := "www.google.com"
-	expectedClue := "search"
-
 	resp, err = StartCli([]string{"./scribe", "ll"}, testDir)
 	if err != nil {
 		t.Errorf("The listLinks method returned an error: %s", err)
@@ -58,5 +56,20 @@ func TestStartCli(t *testing.T) {
 	err = os.RemoveAll(testDir)
 	if err != nil {
 		t.Errorf("Cleanup in the StartCli / AddLink test failed with the following error: %s", err)
+	}
+
+	newLink := "www.amazon.com"
+	resp, err = StartCli([]string{"./scribe", "cl", "search", newLink}, testDir)
+	if len(resp) > 0 {
+		t.Errorf("The deleteLinks method failed to delete the link")
+	}
+
+	text, err = clipboard.ReadAll()
+	if err != nil {
+		t.Errorf("There was an error reading the string from the clipboard: %s", err)
+	}
+
+	if text != newLink {
+		t.Errorf("The changeLink command did not return the expected output\n Expected: %s\n Actual: %s", newLink, text)
 	}
 }
