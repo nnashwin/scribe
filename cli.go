@@ -120,6 +120,47 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 			},
 		},
 		{
+			Name:    "changeLink",
+			Aliases: []string{"cl"},
+			Usage:   "\n      - changes a link previously defined to a clue to another; \n        Example: scribe changeLink search www.amazon.com\n          //=> Changes www.google.com to www.amazon.com\n",
+			Action: func(c *cli.Context) error {
+				if pf.DoesExist(linkPath) == false {
+					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
+				}
+
+				links, err := ioutil.ReadFile(linkPath)
+				if err != nil {
+					return err
+				}
+
+				if len(links) > 0 {
+					err = json.Unmarshal(links, &Links)
+					if err != nil {
+						return err
+					}
+				}
+
+				clue := c.Args().First()
+
+				if _, ok := Links.Entries[clue]; ok == true {
+					l := Links.Entries[clue]
+					Links.Entries[clue] = Link{c.Args().Get(1)}
+
+					b, err := json.Marshal(Links)
+					if err != nil {
+						return err
+					}
+
+					ioutil.WriteFile(linkPath, b, os.ModePerm)
+					resp = append(resp, fmt.Sprintf("Found the link '%s' and changed it to '%s'", l.Url, Links.Entries[clue].Url))
+				} else {
+					return fmt.Errorf("The keyword '%s' does not exist in your list of links", clue)
+				}
+
+				return nil
+			},
+		},
+		{
 			Name:    "getLink",
 			Aliases: []string{"gl"},
 			Usage:   "\n      - retrieves a previously defined link by clue and pastes it to your clipboard; \n        Example: scribe getLink search\n          //=> Pastes www.google.com to your clipboard\n",

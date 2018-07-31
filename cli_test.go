@@ -53,16 +53,20 @@ func TestStartCli(t *testing.T) {
 		t.Errorf("The deleteLinks method failed to delete the link")
 	}
 
-	err = os.RemoveAll(testDir)
+	// Adds link in order to be changed
+	_, err = StartCli([]string{"./scribe", "al", expectedClue, expectedLink}, testDir)
 	if err != nil {
-		t.Errorf("Cleanup in the StartCli / AddLink test failed with the following error: %s", err)
+		t.Errorf("The addLink command encountered the following error: %s", err)
 	}
 
 	newLink := "www.amazon.com"
 	resp, err = StartCli([]string{"./scribe", "cl", "search", newLink}, testDir)
-	if len(resp) > 0 {
-		t.Errorf("The deleteLinks method failed to delete the link")
+	if err != nil {
+		t.Errorf("The changeLink command encountered the following error: %s", err)
 	}
+
+	// Gets the link again to overwrite the clipboard with the new link
+	resp, _ = StartCli([]string{"./scribe", "gl", "search"}, testDir)
 
 	text, err = clipboard.ReadAll()
 	if err != nil {
@@ -71,5 +75,10 @@ func TestStartCli(t *testing.T) {
 
 	if text != newLink {
 		t.Errorf("The changeLink command did not return the expected output\n Expected: %s\n Actual: %s", newLink, text)
+	}
+
+	err = os.RemoveAll(testDir)
+	if err != nil {
+		t.Errorf("Cleanup in the StartCli / AddLink test failed with the following error: %s", err)
 	}
 }
