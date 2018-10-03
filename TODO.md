@@ -6,5 +6,5 @@
 - DONE Add better usage man docs for the list links command
 - DONE Add better usage man docs for the delete links command
 - DONE Write readme to describe api
-- TODO Format the output of list-links to include better messages
+- DONE Format the output of list-links to include better messages
 - TODO Add changeLink support for a specific mnemonic
