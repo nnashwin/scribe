@@ -58,8 +58,8 @@ COMMANDS:
       - displays all of your stored clues and links;
         Example: scribe listLinks
           //=> Printing out your links:
-            - Link: tyler.com, Clue: cookies
-            - Link: google.com, Clue: goog
+            - Clue: cookies,  Link: tyler.com 
+            - Clue: goog,  Link: google.com  
 
      help, h  Shows a list of commands or help for one command
 
