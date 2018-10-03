@@ -16,7 +16,7 @@ var Links = struct {
 	Entries map[string]Link `json:"entries,omitempty"`
 }{}
 
-const listLinkTmpl = `- Clue: {{.Clue}}  Link: {{.Link}}`
+const listLinkTmpl = `- Clue: {{.Clue}},  Link: {{.Link}}`
 
 func StartCli(args []string, linkPath string) (resp []string, err error) {
 	app := cli.NewApp()
