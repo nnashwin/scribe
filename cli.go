@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/atotto/clipboard"
@@ -8,11 +9,14 @@ import (
 	"github.com/urfave/cli"
 	"io/ioutil"
 	"os"
+	"text/template"
 )
 
 var Links = struct {
 	Entries map[string]Link `json:"entries,omitempty"`
 }{}
+
+const listLinkTmpl = `- Clue: {{.Clue}}  Link: {{.Link}}`
 
 func StartCli(args []string, linkPath string) (resp []string, err error) {
 	app := cli.NewApp()
@@ -214,9 +218,21 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 					}
 				}
 
-				resp = append(resp, "Printing out your links:")
+				resp = append(resp, "Printing out your links:\n")
+				t := template.Must(template.New("ListLinks").Parse(listLinkTmpl))
 				for k, link := range Links.Entries {
-					resp = append(resp, fmt.Sprintf("- Link: %s, Clue: %s", link.Url, k))
+					buf := &bytes.Buffer{}
+					// adds map to better execute template on
+					data := map[string]interface{}{
+						"Clue": k,
+						"Link": link.Url,
+					}
+
+					if err := t.Execute(buf, data); err != nil {
+						return err
+					}
+
+					resp = append(resp, buf.String())
 				}
 
 				return nil
