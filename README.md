@@ -23,3 +23,44 @@ $ go install
 ```
 
 You should now be able to run the gogit command from the command line.
+
+## Usage
+```
+NAME:
+   scribe - Quick and easy storage / retrieval of links from keywords
+
+USAGE:
+   scribe [global options] command [command options] [arguments...]
+
+VERSION:
+   0.0.1
+
+AUTHOR:
+   Tyler Boright <ru.lai.development@gmail.com>
+
+COMMANDS:
+     addLink, al  adds a link to your link repository by clue;
+Example:
+  scribe addLink search www.google.com
+                       //=> Adds www.google.com to your directory of links under the clue 'search'
+     deleteLink, dl  deletes a previously defined link by a clue;
+Example:
+  scribe deleteLink goog
+                    //=> Deleted the link to 'google.com' from your link directory
+     getLink, gl  retrieves a previously defined link by clue and pastes it to your clipboard;
+Example:
+  scribe addLink search www.google.com
+                      //=> Pastes www.google.com to your clipboard
+     listLinks, ll  displays all of your stored clues and links;
+Example:
+  scribe listLinks
+                //=> Printing out your links:
+                  - Link: tyler.com, Clue: cookies
+                  - Link: google.com, Clue: goog
+     help, h  Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --help, -h     show help
+   --version, -v  print the version
+```
+
