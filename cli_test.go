@@ -11,29 +11,31 @@ import (
 var testDir = path.Join("./fixtures", "Links.json")
 
 func TestStartCli(t *testing.T) {
+	expectedClue := "search"
+	expectedLink := "www.google.com"
 	// test addLink
-	_, err := StartCli([]string{"./scribe", "al", "search", "www.google.com"}, testDir)
+	resp, err := StartCli([]string{"./scribe", "al", expectedClue, expectedLink}, testDir)
 	if err != nil {
 		t.Errorf("The addLink command encountered the following error: %s", err)
 	}
 
 	// test getLink
-	expected := "www.google.com"
-	_, err = StartCli([]string{"./scribe", "gl", "search"}, testDir)
+	resp, err = StartCli([]string{"./scribe", "gl", "search"}, testDir)
 	if err != nil {
 		t.Errorf("The getLink command encountered the following error: %s", err)
 	}
 
-	text, _ := clipboard.ReadAll()
-	if text != expected {
-		t.Errorf("The getLink command did not return the expected output\n Expected: %s\n Actual: %s", expected, text)
+	text, err := clipboard.ReadAll()
+	if err != nil {
+		t.Errorf("There was an error reading the string from the clipboard: %s", err)
+	}
+
+	if text != expectedLink {
+		t.Errorf("The getLink command did not return the expected output\n Expected: %s\n Actual: %s", expectedLink, text)
 	}
 
 	// test listLinks
-	expectedLink := "www.google.com"
-	expectedClue := "search"
-
-	resp, err := StartCli([]string{"./scribe", "ll"}, testDir)
+	resp, err = StartCli([]string{"./scribe", "ll"}, testDir)
 	if err != nil {
 		t.Errorf("The listLinks method returned an error: %s", err)
 	}
@@ -49,6 +51,30 @@ func TestStartCli(t *testing.T) {
 	resp, err = StartCli([]string{"./scribe", "gl", "search"}, testDir)
 	if len(resp) > 0 {
 		t.Errorf("The deleteLinks method failed to delete the link")
+	}
+
+	// Adds link in order to be changed
+	_, err = StartCli([]string{"./scribe", "al", expectedClue, expectedLink}, testDir)
+	if err != nil {
+		t.Errorf("The addLink command encountered the following error: %s", err)
+	}
+
+	newLink := "www.amazon.com"
+	resp, err = StartCli([]string{"./scribe", "cl", "search", newLink}, testDir)
+	if err != nil {
+		t.Errorf("The changeLink command encountered the following error: %s", err)
+	}
+
+	// Gets the link again to overwrite the clipboard with the new link
+	resp, _ = StartCli([]string{"./scribe", "gl", "search"}, testDir)
+
+	text, err = clipboard.ReadAll()
+	if err != nil {
+		t.Errorf("There was an error reading the string from the clipboard: %s", err)
+	}
+
+	if text != newLink {
+		t.Errorf("The changeLink command did not return the expected output\n Expected: %s\n Actual: %s", newLink, text)
 	}
 
 	err = os.RemoveAll(testDir)
