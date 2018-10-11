@@ -77,6 +77,26 @@ func TestStartCli(t *testing.T) {
 		t.Errorf("The changeLink command did not return the expected output\n Expected: %s\n Actual: %s", newLink, text)
 	}
 
+	// pipe link
+	err = clipboard.WriteAll("textlink.com")
+	if err != nil {
+		t.Errorf("There was an error writing the string to the clipboard: %s", err)
+	}
+
+	text, err = clipboard.ReadAll()
+	if err != nil {
+		t.Errorf("There was an error reading the string from the clipboard: %s", err)
+	}
+
+	resp, _ = StartCli([]string{"./scribe", "pl", "search"}, testDir)
+	if strings.Join(resp[:], ",") != newLink {
+		t.Errorf("The pipeLink command did not return the expected output\n Expected: %s\n Actual: %s", newLink, resp)
+	}
+
+	if strings.Join(resp[:], ",") == text {
+		t.Errorf("The pipeLink command wrote to the clipboard when it should have just printed to stdout\n Stdout: %s, ClipboardText: %s", resp, text)
+	}
+
 	err = os.RemoveAll(testDir)
 	if err != nil {
 		t.Errorf("Cleanup in the StartCli / AddLink test failed with the following error: %s", err)

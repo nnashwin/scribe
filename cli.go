@@ -198,6 +198,38 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 			},
 		},
 		{
+			Name:    "pipeLink",
+			Aliases: []string{"pl"},
+			Usage:   "\n      - retrieves a previously defined link by clue and pipes it to your stdout for used in bash commands; \n        Example: echo `scribe pipeLine search`\n          //=> www.google.com\n",
+			Action: func(c *cli.Context) error {
+				if pf.DoesExist(linkPath) == false {
+					return fmt.Errorf("You have not created any links.  Run the addLink command and start")
+				}
+
+				links, err := ioutil.ReadFile(linkPath)
+				if err != nil {
+					return err
+				}
+
+				if len(links) > 0 {
+					err = json.Unmarshal(links, &Links)
+					if err != nil {
+						return err
+					}
+				}
+
+				if _, ok := Links.Entries[c.Args().First()]; ok == true {
+					url := Links.Entries[c.Args().First()].Url
+
+					resp = append(resp, url)
+				} else {
+					return fmt.Errorf("The keyword '%s' does not exist in your list of links", c.Args().First())
+				}
+
+				return nil
+			},
+		},
+		{
 			Name:    "listLinks",
 			Aliases: []string{"ll"},
 			Usage: "\n      - displays all of your stored clues and links; \n        Example: scribe listLinks\n					//=> Printing out your links:\n						- Link: tyler.com, Clue: cookies\n						- Link: google.com, Clue: goog\n",
