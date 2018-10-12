@@ -49,17 +49,27 @@ COMMANDS:
         Example: scribe deleteLink search
           //=> Deleted the link to 'google.com' from your link directory
 
+     changeLink, cl
+      - changes a link previously defined to a clue to another;
+        Example: scribe changeLink search www.amazon.com
+          //=> Changes www.google.com to www.amazon.com
+
      getLink, gl
       - retrieves a previously defined link by clue and pastes it to your clipboard;
         Example: scribe getLink search
           //=> Pastes www.google.com to your clipboard
 
+     pipeLink, pl
+      - retrieves a previously defined link by clue and pipes it to your stdout for used in bash commands;
+        Example: echo `scribe pipeLine search`
+          //=> www.google.com
+
      listLinks, ll
       - displays all of your stored clues and links;
         Example: scribe listLinks
           //=> Printing out your links:
-            - Clue: cookies,  Link: tyler.com 
-            - Clue: goog,  Link: google.com  
+            - Link: tyler.com, Clue: cookies
+            - Link: google.com, Clue: goog
 
      help, h  Shows a list of commands or help for one command
 
