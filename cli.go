@@ -9,6 +9,7 @@ import (
 	"github.com/urfave/cli"
 	"io/ioutil"
 	"os"
+	"sort"
 	"text/template"
 )
 
@@ -250,16 +251,25 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 					}
 				}
 
+				keys := []string{}
+				for key, _ := range Links.Entries {
+					keys = append(keys, key)
+				}
+
+				// Sorts keys to print Links in alphabetical order
+				sort.Strings(keys)
+
 				resp = append(resp, "Printing out your links:\n")
 				t := template.Must(template.New("ListLinks").Parse(listLinkTmpl))
-				for k, link := range Links.Entries {
+
+				for _, key := range keys {
 					buf := &bytes.Buffer{}
+
 					// adds map to better execute template on
 					data := map[string]interface{}{
-						"Clue": k,
-						"Link": link.Url,
+						"Clue": key,
+						"Link": Links.Entries[key].Url,
 					}
-
 					if err := t.Execute(buf, data); err != nil {
 						return err
 					}
