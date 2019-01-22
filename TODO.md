@@ -7,7 +7,8 @@
 - DONE Add better usage man docs for the delete links command
 - DONE Write readme to describe api
 - DONE Format the output of list-links to include better messages
-- TODO Print out clues with ll in alphabetical order
+- DONE Print out clues with ll in alphabetical order
+- TODO Add trie support to return all links whose clues start with a particular set of characters
 - TODO Ensure that when you are getting a link that it returns the link to stdout so that you can 
     Pipe commands together.
 - TODO Add changeLink support for a specific mnemonic
