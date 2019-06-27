@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/atotto/clipboard"
 	pf "github.com/ru-lai/pathfinder"
-	"github.com/urfave/cli"
+	"gopkg.in/urfave/cli.v1"
 	"io/ioutil"
 	"os"
 	"sort"
@@ -32,7 +32,7 @@ func StartCli(args []string, linkPath string) (resp []string, err error) {
 	}
 
 	app.Action = func(c *cli.Context) error {
-		resp = append(resp, "Add a link with scribe!  Run scribe addLink <linkClue> <link> to begin!")
+		resp = append(resp, "Add a link with scribe!  Run scribe addLink <linkClue> <link> to begin!\n")
 		return nil
 	}
 
